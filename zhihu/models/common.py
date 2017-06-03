@@ -1,5 +1,4 @@
 # encoding: utf-8
-
 """
 通用的操作放在此模块中
 """
@@ -28,16 +27,18 @@ class Common(Model):
             raise ZhihuError("至少指定一个关键字参数")
 
         if user_id is None:
-            user_slug = self._user_slug(profile_url) if user_slug is None else user_slug
+            user_slug = self._user_slug(
+                profile_url) if user_slug is None else user_slug
             user_id = self._user_id(user_slug)
 
         data = {"type": "common", "content": content, "receiver_hash": user_id}
         response = self._session.post(URL.message(), json=data, **kwargs)
         if response.ok:
-            response.json()
+            return response.json()
             self.log("发送成功")
         else:
             self.log("发送失败")
+            raise ZhihuError("操作失败：%s" % response.text)
 
     @need_login
     def user(self, user_slug=None, profile_url=None, **kwargs):
@@ -52,16 +53,16 @@ class Common(Model):
         >>> user(user_slug = "xiaoxiaodouzi")
 
         """
-
         if not any([profile_url, user_slug]):
             raise ZhihuError("至少指定一个关键字参数")
 
         user_slug = self._user_slug(profile_url) if user_slug is None else user_slug
         response = self._session.get(URL.profile(user_slug), **kwargs)
+
         if response.ok:
             return response.json()
         else:
-            self.logger.error(u"获取用户信息失败, status code: %s" % response.status_code)
+            raise ZhihuError("操作失败：%s" % response.text)
 
     @need_login
     def follow(self, user_slug=None, profile_url=None, **kwargs):
@@ -82,7 +83,7 @@ class Common(Model):
         if response.ok:
             return response.json()
         else:
-            self.logger.error(u"关注失败, status code: %s" % response.status_code)
+            raise ZhihuError("操作失败：%s" % response.text)
 
     @need_login
     def unfollow(self, user_slug=None, profile_url=None, **kwargs):
@@ -98,9 +99,10 @@ class Common(Model):
         if not any([profile_url, user_slug]):
             raise ZhihuError("至少指定一个关键字参数")
 
-        user_slug = self._user_slug(profile_url) if user_slug is None else user_slug
+        user_slug = self._user_slug(
+            profile_url) if user_slug is None else user_slug
         response = self._session.delete(URL.follow_people(user_slug), **kwargs)
         if response.ok:
             return response.json()
         else:
-            self.logger.error(u"取消关注失败, status code: %s" % response.status_code)
+            raise ZhihuError("操作失败：%s" % response.text)

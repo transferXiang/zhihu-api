@@ -32,11 +32,16 @@ class Question(Model):
     def follow_question(self, **kwargs):
         """关注某问题"""
         r = self._execute(url=URL.follow_question(self.id), **kwargs)
-        return r.json()
+        if r.ok:
+            return r.json()
+        else:
+            raise ZhihuError("操作失败：%s" % r.text)
 
     @need_login
     def unfollow_question(self, **kwargs):
         """取消关注某问题"""
         r = self._execute(method="delete", url=URL.unfollow_question(self.id), **kwargs)
         if r.ok:
-            return {"is_following": False}
+            return r.json()
+        else:
+            raise ZhihuError("操作失败：%s" % r.text)

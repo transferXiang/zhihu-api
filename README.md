@@ -1,16 +1,7 @@
-### 目标
 
-试图构建一个更加简洁、优雅的、Pythonic 的知乎 API。
+## 关于
 
-### 使用场景
-* 如果你想基于知乎社区做数据分析
-* 如果你想通过程序自动给回答点赞
-* 如果你想批量关注用户
-* 如果你想批量发送信息
-* 如果你想构建一个自己的知乎客户端
-* 如果你想...
-
-如果你有以上需求，那么 zhihu-api 项目可能适合你，不过你要记住，如果是批量操作，你需要有频次地操作，否则容易被知乎判断为机器人。
+Zhihu-API 的初衷是希望提供一套简洁、优雅的、Pythonic的API接口，面向的用户是对知乎数据有兴趣的群体，它可以用在数据分析、数据挖掘、增长黑客、以及希望通过程序自动完成知乎某个操作等应用场景。
 
 ## 前置条件
 
@@ -28,7 +19,7 @@ pip install git+git://github.com/lzjun567/zhihu-api --upgrade
 
 **个人信息**
 ```
->>> from zhihu.zhihu import Zhihu
+>>> from zhihu import Zhihu
 >>> zhihu = Zhihu()
 >>> zhihu.user(user_slug="xiaoxiaodouzi")
 
@@ -44,7 +35,6 @@ pip install git+git://github.com/lzjun567/zhihu-api --upgrade
      'url_token': 'xiaoxiaodouzi',
      'id': '1da75b85900e00adb072e91c56fd9149',
      'is_org': False}
-
 ```
 
 **私信发送**
@@ -103,6 +93,19 @@ pip install git+git://github.com/lzjun567/zhihu-api --upgrade
               u'name': u'keyoka', u'profileUrl': u'https://www.zhihu.com/people/yi-hu-84',
               u'avatar': {u'id': u'785bfd914', u'template': u'https://pic1.zhimg.com/{id}_{size}.jpg'},
               u'isOrgWhiteList': False, u'slug': u'yi-hu-84', u'uid': 43738302775296L}]
+```
+
+
+**关注专栏**
+```
+>>> column.follow()
+关注专栏成功
+```
+
+**取消关注专栏**
+```
+>>> column.follow()
+取消关注专栏成功
 ```
 
 每个接口都提供了不只一种方式调用，更多参考单元测试里面的例子

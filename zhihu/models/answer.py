@@ -33,6 +33,8 @@ class Answer(Model):
         r = self._execute(url=URL.vote_up(self.id), data={"type": "up"}, **kwargs)
         if r.ok:
             return r.json()
+        else:
+            raise ZhihuError("操作失败：%s" % r.text)
 
     @need_login
     def vote_down(self, **kwargs):
@@ -42,6 +44,8 @@ class Answer(Model):
         r = self._execute(url=URL.vote_down(self.id), data={"type": "down"}, **kwargs)
         if r.ok:
             return r.json()
+        else:
+            raise ZhihuError("操作失败：%s" % r.text)
 
     @need_login
     def vote_neutral(self, **kwargs):
@@ -51,6 +55,8 @@ class Answer(Model):
         r = self._execute(url=URL.vote_neutral(self.id), data={"type": "neutral"}, **kwargs)
         if r.ok:
             return r.json()
+        else:
+            raise ZhihuError("操作失败：%s" % r.text)
 
     @need_login
     def thank(self, **kwargs):
@@ -60,6 +66,8 @@ class Answer(Model):
         r = self._execute(url=URL.thank(self.id), **kwargs)
         if r.ok:
             return r.json()
+        else:
+            raise ZhihuError("操作失败：%s" % r.text)
 
     @need_login
     def thank_cancel(self, **kwargs):
@@ -69,3 +77,5 @@ class Answer(Model):
         r = self._execute(method="delete", url=URL.thank_cancel(self.id), **kwargs)
         if r.ok:
             return r.json()
+        else:
+            raise ZhihuError("操作失败：%s" % r.text)
